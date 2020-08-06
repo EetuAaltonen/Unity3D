@@ -8,6 +8,14 @@ public class RotateViewer : MonoBehaviour
     public bool SwapItemRequest;
     public float RotateSpeed = 400;
 
+    [SerializeField] private GameObject _itemHolderLocatorRef;
+    private InspectorHolderZoom _holderScript;
+
+    void Start()
+    {
+        _holderScript = _itemHolderLocatorRef.GetComponent<InspectorHolderZoom>();
+    }
+
     void Update()
     {
         if (SwapItemRequest)
@@ -16,6 +24,7 @@ public class RotateViewer : MonoBehaviour
             if (Item)
             {
                 SwapItem(Item.Prefab);
+                _holderScript.ResetPosition();
             }
         }
 
@@ -31,20 +40,22 @@ public class RotateViewer : MonoBehaviour
 
     public void SwapItem(GameObject prefab)
     {
-        transform.localRotation = Quaternion.Euler(0f, 170f, 65f);
+        transform.localRotation = Quaternion.Euler(0f, 0f, 65f);
         if (transform.childCount > 0)
         {
             Destroy(transform.GetChild(0).gameObject);
         }
 
-        GameObject gameObject = Instantiate(
-            Item.Prefab,
-            new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity
-        ) as GameObject;
-        gameObject.transform.parent = transform;
-        gameObject.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-
-        SetLayerRecursively(gameObject, LayerMask.NameToLayer("ItemInspector"));
+        if (prefab != null)
+        {
+            GameObject gameObject = Instantiate(
+                Item.Prefab,
+                new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity
+            ) as GameObject;
+            gameObject.transform.parent = transform;
+            gameObject.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            SetLayerRecursively(gameObject, LayerMask.NameToLayer("ItemInspector"));
+        }
     }
 
     void SetLayerRecursively(GameObject obj, int newLayer)
