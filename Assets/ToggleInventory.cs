@@ -9,11 +9,20 @@ public class ToggleInventory : MonoBehaviour
     public bool InventoryOpen;
     public Camera ItemInspectorCamera;
 
+    [SerializeField] private GameObject _itemInspectorLocatorRef;
+    [SerializeField] private GameObject _itemInspectorHolderRef;
+    private InspectorHolderZoom _holderZoomScript;
+    private RotateViewer _rotateScript;
+
+    // Start is called before the first frame update
     void Start()
     {
         InventoryOpen = false;
         InventoryScreen.gameObject.SetActive(InventoryOpen);
         ItemInspectorCamera.gameObject.SetActive(InventoryOpen);
+
+        _holderZoomScript = _itemInspectorLocatorRef.GetComponent<InspectorHolderZoom>();
+        _rotateScript = _itemInspectorHolderRef.GetComponent<RotateViewer>();
     }
 
     // Update is called once per frame
@@ -28,6 +37,8 @@ public class ToggleInventory : MonoBehaviour
             if (InventoryOpen)
             {
                 Cursor.lockState = CursorLockMode.None;
+                _holderZoomScript.ResetPosition();
+                _rotateScript.SwapItem(null);
             }
             else
             {
