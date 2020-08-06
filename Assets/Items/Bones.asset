@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59711abace8169947b6b9e89cc0097a8, type: 3}
-  m_Name: Sword
+  m_Script: {fileID: 11500000, guid: 72940841bae416b4093096573729aa14, type: 3}
+  m_Name: Bones
   m_EditorClassIdentifier: 
-  Id: 1
-  Prefab: {fileID: 919132149155446097, guid: 4b4a12d742e0a9d4c9427affc95830a4, type: 3}
-  Name: Sword
-  Type: 0
-  Description: Sharp sword.
+  prefab: {fileID: 4146502740888874150, guid: 90a7f12a5d1a3194b8e6134e1d2f398c, type: 3}
+  type: 2
+  description: Simply someone's bones

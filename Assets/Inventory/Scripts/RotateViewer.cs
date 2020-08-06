@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class RotateViewer : MonoBehaviour
 {
-    public ItemObject item;
-    public bool swapItem;
-    float rotateSpeed = 400;
+    public ItemData Item;
+    public bool SwapItemRequest;
+    public float RotateSpeed = 400;
 
     void Update()
     {
-        if (swapItem)
+        if (SwapItemRequest)
         {
-            swapItem = false;
-            if (item)
+            SwapItemRequest = false;
+            if (Item)
             {
-                SwapItem(item.Prefab);
+                SwapItem(Item.Prefab);
             }
         }
 
         if (Input.GetMouseButton(0))
         {
-            float rotX = Input.GetAxis("Mouse X") * rotateSpeed * Time.deltaTime;
-            float rotY = Input.GetAxis("Mouse Y") * rotateSpeed * Time.deltaTime;
+            float rotX = Input.GetAxis("Mouse X") * RotateSpeed * Time.deltaTime;
+            float rotY = Input.GetAxis("Mouse Y") * RotateSpeed * Time.deltaTime;
 
             transform.Rotate(Vector3.up, -rotX, Space.World);
             transform.Rotate(Vector3.right, rotY, Space.World);
@@ -31,13 +31,14 @@ public class RotateViewer : MonoBehaviour
 
     public void SwapItem(GameObject prefab)
     {
+        transform.localRotation = Quaternion.Euler(0f, 170f, 65f);
         if (transform.childCount > 0)
         {
             Destroy(transform.GetChild(0).gameObject);
         }
 
         GameObject gameObject = Instantiate(
-            item.Prefab,
+            Item.Prefab,
             new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity
         ) as GameObject;
         gameObject.transform.parent = transform;
