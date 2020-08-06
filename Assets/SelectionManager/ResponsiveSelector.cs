@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class ResponsiveSelector : MonoBehaviour, ISelector
 {
-    public LayerMask selectableLayer;
-    public float treshold;
+    public LayerMask SelectableLayer;
+    public float Treshold;
+    public Transform PlayerLocation;
+    public float MaxDistance;
     private Transform _selection;
     
     public void Check(Ray ray)
@@ -19,17 +21,18 @@ public class ResponsiveSelector : MonoBehaviour, ISelector
         var closest = 0f;
         foreach (var gameObject in gameObjectArray)
         {
-            if (selectableLayer == (selectableLayer | (1 << gameObject.layer)))
-            {
-                var vector2 = gameObject.transform.position - ray.origin;
-                var lookPercentage = Vector3.Dot(vector1.normalized, vector2.normalized);
-
-                if (lookPercentage > treshold && lookPercentage > closest)
+            if (Vector3.Distance(gameObject.transform.position, PlayerLocation.position) <= MaxDistance)
+                if (SelectableLayer == (SelectableLayer | (1 << gameObject.layer)))
                 {
-                    closest = lookPercentage;
-                    _selection = gameObject.transform;
+                    var vector2 = gameObject.transform.position - ray.origin;
+                    var lookPercentage = Vector3.Dot(vector1.normalized, vector2.normalized);
+
+                    if (lookPercentage > Treshold && lookPercentage > closest)
+                    {
+                        closest = lookPercentage;
+                        _selection = gameObject.transform;
+                    }
                 }
-            }
         }
     }
 
