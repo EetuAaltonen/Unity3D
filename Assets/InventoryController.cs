@@ -63,8 +63,8 @@ public class InventoryController : MonoBehaviour
         var inventorySize = InventoryObject.Container.Items.Count;
         for (i = 0; i < inventorySize; i++)
         {
-            var slot = InventoryObject.Container.Items[i];
-            if (item.Id >= slot.Id) break;
+            var _item = InventoryObject.Container.Items[i];
+            if (_item.Id >= item.Id) break;
         }
         return i;
     }
