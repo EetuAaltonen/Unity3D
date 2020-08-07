@@ -8,8 +8,8 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 {
     public ItemData[] WeaponData;
     public ItemData[] EquipmentData;
-    public ItemData[] FoodData;
     public ItemData[] PotionData;
+    public ItemData[] FoodData;
     public ItemData[] BookData;
     public ItemData[] QuestData;
     public ItemData[] GeneralData;
@@ -22,8 +22,8 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
         {
             WeaponData,
             EquipmentData,
-            FoodData,
             PotionData,
+            FoodData,
             BookData,
             QuestData,
             GeneralData
