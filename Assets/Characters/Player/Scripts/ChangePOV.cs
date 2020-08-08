@@ -1,28 +1,49 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ChangePOV : MonoBehaviour
 {
-    public Transform Player;
-    public Camera FirstPersonCam, ThirdPersonCam;
     public KeyCode TKey;
-    public bool IsFirstPerson = false;
+
+    [SerializeField] private GameObject _playerRef;
+    [SerializeField] private GameObject _cinemachineThirdPerson;
+    private bool _isFirstPerson;
+    private PlayerCamera _cameraScript;
+    private CinemachineFreeLook _cinemachineScript;
+    private Camera _firstPersonCamera;
+    private Camera _thirdPersonCamera;
+
+    private void Start()
+    {
+        _isFirstPerson = true;
+        _cameraScript = GetComponent<PlayerCamera>();
+        _cinemachineScript = _cinemachineThirdPerson.GetComponent<CinemachineFreeLook>();
+        _firstPersonCamera = _cameraScript.FirstPersonCamera;
+        _thirdPersonCamera = _cameraScript.ThirdPersonCamera;
+    }
 
     void Update() {
         if (Input.GetKeyDown(TKey))
         {
-            IsFirstPerson = !IsFirstPerson;
-            if (IsFirstPerson)
+            _isFirstPerson = !_isFirstPerson;
+            if (_isFirstPerson)
             {
-                Player.transform.localRotation = Quaternion.Euler(Player.transform.eulerAngles.x, ThirdPersonCam.transform.eulerAngles.y, Player.transform.eulerAngles.z);
-                FirstPersonCam.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                transform.localRotation = Quaternion.Euler(transform.eulerAngles.x, _thirdPersonCamera.transform.eulerAngles.y, transform.eulerAngles.z);
+                _cameraScript.ResetXRotation();
             } else
             {
-                ThirdPersonCam.transform.localRotation = Quaternion.Euler(ThirdPersonCam.transform.eulerAngles.x, FirstPersonCam.transform.eulerAngles.y, ThirdPersonCam.transform.eulerAngles.z);
+                _cinemachineScript.m_XAxis.Value = _playerRef.transform.localRotation.eulerAngles.y;
+                _cinemachineScript.m_YAxis.Value = 0.25f;
             }
-            FirstPersonCam.gameObject.SetActive(IsFirstPerson);
-            ThirdPersonCam.gameObject.SetActive(!IsFirstPerson);
+            _firstPersonCamera.gameObject.SetActive(_isFirstPerson);
+            _thirdPersonCamera.gameObject.SetActive(!_isFirstPerson);
         }
+    }
+
+    public bool IsFirstPerson()
+    {
+        return _isFirstPerson;
     }
 }
