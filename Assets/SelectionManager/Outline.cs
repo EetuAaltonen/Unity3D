@@ -92,37 +92,12 @@ public class Outline : MonoBehaviour
 
     void Awake()
     {
-
-        // Cache renderers
-        renderers = GetComponentsInChildren<Renderer>();
-
-        // Instantiate outline materials
-        outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
-        outlineFillMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineFill"));
-
-        outlineMaskMaterial.name = "OutlineMask (Instance)";
-        outlineFillMaterial.name = "OutlineFill (Instance)";
-
-        // Retrieve or generate smooth normals
-        LoadSmoothNormals();
-
-        // Apply material properties immediately
-        needsUpdate = true;
+        InitOutline();
     }
 
     void OnEnable()
     {
-        foreach (var renderer in renderers)
-        {
-
-            // Append outline shaders
-            var materials = renderer.sharedMaterials.ToList();
-
-            materials.Add(outlineMaskMaterial);
-            materials.Add(outlineFillMaterial);
-
-            renderer.materials = materials.ToArray();
-        }
+        AddRendererMaterials();
     }
 
     void OnValidate()
@@ -229,6 +204,49 @@ public class Outline : MonoBehaviour
             {
                 skinnedMeshRenderer.sharedMesh.uv4 = new Vector2[skinnedMeshRenderer.sharedMesh.vertexCount];
             }
+        }
+    }
+
+    // Recalculate meshes of child objects of a dropped item after Instantiate()
+    public void ReInitOutline()
+    {
+        InitOutline();
+        AddRendererMaterials();
+    }
+
+    void InitOutline()
+    {
+        // Cache renderers
+        renderers = GetComponentsInChildren<Renderer>();
+
+        // Instantiate outline materials
+        outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
+        outlineFillMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineFill"));
+
+        outlineMaskMaterial.name = "OutlineMask (Instance)";
+        outlineFillMaterial.name = "OutlineFill (Instance)";
+
+        // Clear registeredMeshes to re-register all child meshes
+        registeredMeshes = new HashSet<Mesh>();
+
+        // Retrieve or generate smooth normals
+        LoadSmoothNormals();
+
+        // Apply material properties immediately
+        needsUpdate = true;
+    }
+
+    void AddRendererMaterials()
+    {
+        foreach (var renderer in renderers)
+        {
+            // Append outline shaders
+            var materials = renderer.sharedMaterials.ToList();
+
+            materials.Add(outlineMaskMaterial);
+            materials.Add(outlineFillMaterial);
+
+            renderer.materials = materials.ToArray();
         }
     }
 
