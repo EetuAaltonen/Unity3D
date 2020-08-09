@@ -2851,6 +2851,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 67f04b94b5bba3440b73a8bba33f5bb1, type: 2}
+    - target: {fileID: 5866666021909216657, guid: ed12d9a8fbe90274c9cf6b82744d61e2, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed12d9a8fbe90274c9cf6b82744d61e2, type: 3}
 --- !u!4 &1276500968 stripped
@@ -4692,7 +4696,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 86270752220654150, guid: bc4b6c7373497194e9d14508f5b970e6, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 86270752220654150, guid: bc4b6c7373497194e9d14508f5b970e6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
