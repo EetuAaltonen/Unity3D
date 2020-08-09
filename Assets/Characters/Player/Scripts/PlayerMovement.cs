@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private float _turnSmoothTime = 0.2f;
     private float _turnSmoothVelocity;
 
-
+    // Start is called before the first frame update
     void Start() {
         _controller = GetComponent<CharacterController>();
         _gravityScript = GetComponent<PlayerGravity>();
@@ -59,9 +59,9 @@ public class PlayerMovement : MonoBehaviour
             _controller.Move(transform.forward * _smoothSpeed * Time.deltaTime);
         }
 
-        if (Input.GetButtonDown("Jump") && _gravityScript.IsGrounded)
+        if (Input.GetButtonDown("Jump") && _gravityScript.IsGrounded())
         {
-            _gravityScript.SetVelocity(Mathf.Sqrt(-JumpVelocity * _gravityScript.Gravity));
+            _gravityScript.SetVelocity(Mathf.Sqrt(-JumpVelocity * _gravityScript.GetGravity()));
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
