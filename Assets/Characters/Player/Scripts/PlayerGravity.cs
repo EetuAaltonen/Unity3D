@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerGravity : MonoBehaviour
 {
     public CharacterController Controller;
-    public Transform GroundCheck;
     public float CheckDistanceToGround;
     public LayerMask GroundMask;
 

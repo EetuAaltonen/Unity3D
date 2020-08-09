@@ -11,11 +11,13 @@ public class RotateViewer : MonoBehaviour
     [SerializeField] private GameObject _itemHolderLocatorRef;
     private InspectorHolderZoom _holderScript;
 
+    // Start is called before the first frame update
     void Start()
     {
         _holderScript = _itemHolderLocatorRef.GetComponent<InspectorHolderZoom>();
     }
 
+    // Update is called once per frame
     void Update()
     {
         if (SwapItemRequest)
