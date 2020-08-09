@@ -9,8 +9,6 @@ public class PlayerMovement : MonoBehaviour
     public float MaxWalkSpeed;
     public float JumpVelocity;
 
-    [SerializeField] private GameObject _playerRef;
-
     private CharacterController _controller;
     private PlayerGravity _gravityScript;
     private PlayerCamera _cameraScript;
@@ -19,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private Camera _thirdPersonCamera;
     private float _maxSpeed;
     private float _smoothSpeed;
+    private float _speedInterpolation = 3f;
 
     private float _turnSmoothTime = 0.2f;
     private float _turnSmoothVelocity;
@@ -50,19 +49,19 @@ public class PlayerMovement : MonoBehaviour
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, _turnSmoothTime);
                 transform.rotation = Quaternion.Euler(0f, angle, 0f);
             }
-            _smoothSpeed = Mathf.Lerp(_smoothSpeed, _maxSpeed, Time.deltaTime);
+            _smoothSpeed = Mathf.Lerp(_smoothSpeed, _maxSpeed, _speedInterpolation * Time.deltaTime);
+            _controller.Move(move * _smoothSpeed * Time.deltaTime);
         }
         else
         {
             StopRunning();
-            _smoothSpeed = Mathf.Lerp(_smoothSpeed, 0, Time.deltaTime);
+            _smoothSpeed = Mathf.Lerp(_smoothSpeed, 0, (_speedInterpolation * 2) * Time.deltaTime);
+            _controller.Move(transform.forward * _smoothSpeed * Time.deltaTime);
         }
-        _smoothSpeed = Mathf.Clamp(_smoothSpeed, 0, _maxSpeed);
-        _controller.Move(move * _smoothSpeed * Time.deltaTime);
 
         if (Input.GetButtonDown("Jump") && _gravityScript.IsGrounded)
         {
-            _gravityScript.SetVelocity(Mathf.Sqrt(JumpVelocity * -1f * _gravityScript.Gravity));
+            _gravityScript.SetVelocity(Mathf.Sqrt(-JumpVelocity * _gravityScript.Gravity));
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -80,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
     public void StopMovement()
     {
         StopRunning();
-        transform.up = Vector3.zero;
+        _gravityScript.SetVelocity(0f);
         _smoothSpeed = 0;
     }
 

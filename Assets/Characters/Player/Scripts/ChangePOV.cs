@@ -15,7 +15,8 @@ public class ChangePOV : MonoBehaviour
     private Camera _firstPersonCamera;
     private Camera _thirdPersonCamera;
 
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         _isFirstPerson = true;
         _cameraScript = GetComponent<PlayerCamera>();
@@ -24,6 +25,7 @@ public class ChangePOV : MonoBehaviour
         _thirdPersonCamera = _cameraScript.ThirdPersonCamera;
     }
 
+    // Update is called once per frame
     void Update() {
         if (Input.GetKeyDown(TKey))
         {

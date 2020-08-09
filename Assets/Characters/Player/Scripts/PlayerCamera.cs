@@ -11,7 +11,7 @@ public class PlayerCamera : MonoBehaviour
     public float Speed = 6f;
 
     [SerializeField] private GameObject _playerRef;
-    private float xRotation = 0f;
+    private float xRotation;
 
     ChangePOV povScript;
     GameObject uiControllerRef;
