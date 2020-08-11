@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,37 +42,30 @@ public class PlayerMovement : MonoBehaviour
     void Update() {
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
-        var isFirstPerson = _povScript.IsFirstPerson();
         Vector3 move = transform.right * x + transform.forward * z;
+
+        if (z < 0)
+        {
+            StopRunning();
+        }
+        RotatePlayerModel(x, z, move);
 
         if (move.magnitude > 0)
         {
-            if (!isFirstPerson)
+            if (!_povScript.IsFirstPerson())
             {
                 float targetAngle = _thirdPersonCamera.transform.eulerAngles.y;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, _turnSmoothTime);
-                transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-                float modelAngle;
-                float modelTargetAngle = 90f - (z * 45f);
-                float playerYRotation = _playerRef.localRotation.eulerAngles.y;
-                playerYRotation = (playerYRotation > 180) ? playerYRotation - 360 : playerYRotation;
-                modelAngle = Mathf.Lerp(playerYRotation, modelTargetAngle * x, _modelTurnInterpolation * Time.deltaTime);
-                _playerRef.localRotation = Quaternion.Euler(0f, modelAngle, 0f);
-            }
-            else
-            {
-                _playerRef.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                transform.localRotation = Quaternion.Euler(0f, angle, 0f);
             }
             _smoothSpeed = Mathf.Lerp(_smoothSpeed, _maxSpeed, _speedInterpolation * Time.deltaTime);
-            _controller.Move(move.normalized * _smoothSpeed * Time.deltaTime
-            );
+            _controller.Move(move.normalized * _smoothSpeed * Time.deltaTime);
         }
         else
         {
             StopRunning();
-            _smoothSpeed = Mathf.Lerp(_smoothSpeed, 0, (_speedInterpolation * 2) * Time.deltaTime);
-            _controller.Move(transform.forward.normalized * _smoothSpeed * Time.deltaTime);
+            _smoothSpeed = Mathf.Lerp(_smoothSpeed, 0, _speedInterpolation * Time.deltaTime);
+            _controller.Move(move.normalized * _smoothSpeed * Time.deltaTime);
         }
 
         if (Input.GetButtonDown("Jump") && _gravityScript.IsGrounded())
@@ -102,5 +96,32 @@ public class PlayerMovement : MonoBehaviour
     {
         IsRunning = false;
         _maxSpeed = MaxWalkSpeed;
+    }
+
+    private void RotatePlayerModel(float x, float z, Vector3 move)
+    {
+        float modelAngle;
+        float playerYRotation = _playerRef.localRotation.eulerAngles.y;
+        playerYRotation = ScaleRotation(playerYRotation);
+        if (move.magnitude > 0)
+        {
+            float modelTargetAngle = 90f - (z * 45f);
+            playerYRotation = ScaleRotation(playerYRotation);
+            modelAngle = Mathf.Lerp(playerYRotation, modelTargetAngle * x, _modelTurnInterpolation * Time.deltaTime);
+            _playerRef.localRotation = Quaternion.Euler(0f, modelAngle, 0f);
+        }
+        else
+        {
+            if (_povScript.IsFirstPerson())
+            {
+                modelAngle = Mathf.Lerp(playerYRotation, 0, _modelTurnInterpolation * Time.deltaTime);
+                _playerRef.localRotation = Quaternion.Euler(0f, modelAngle, 0f);
+            }
+        }
+    }
+
+    private float ScaleRotation(float rotation)
+    {
+        return (rotation > 180) ? rotation - 360 : rotation;
     }
 }
