@@ -10,13 +10,13 @@ public class WagonPartsRotation : MonoBehaviour
     [SerializeField] private Transform _directionFrame;
     [SerializeField] private Transform _saddleAxel;
     private float _offsetY = 3.6f;
-    private CharacterFollowPath _horseFollowPathScript;
+    private CharacterPathFollow _horseFollowPathScript;
 
     // Start is called before the first frame update
     void Start()
     {
         _controller = GetComponent<CharacterController>();
-        _horseFollowPathScript = Horse.GetComponent<CharacterFollowPath>();
+        _horseFollowPathScript = Horse.GetComponent<CharacterPathFollow>();
     }
 
     // Update is called once per frame
