@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectionManager : MonoBehaviour
+public class SelectionController : MonoBehaviour
 {
     private IRayProvider _rayProvider;
     private ISelector _selector;
