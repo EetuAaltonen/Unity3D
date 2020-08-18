@@ -14,8 +14,18 @@ public class DisplayInventory : MonoBehaviour
     public int YMargin;
     public int SlotCount;
     public int StartIndex;
-    
+
+    [SerializeField] private GameObject _inventoryController;
+    private InventoryController _inventoryScript;
     private bool _refreshInventory;
+    private Transform _weightTxtRef;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        _inventoryScript = _inventoryController.GetComponent<InventoryController>();
+        _weightTxtRef = transform.Find("WeightTxt");
+    }
 
     // Update is called once per frame
     void Update()
@@ -24,6 +34,9 @@ public class DisplayInventory : MonoBehaviour
         {
             _refreshInventory = false;
             UpdateInventorySlots();
+            var inventoryObject = _inventoryScript.InventoryObject;
+            var newWeightTxt = $"{inventoryObject.WeightLoad} / {inventoryObject.WeightCapacity + inventoryObject.WeightCapacityBuff}";
+            _weightTxtRef.GetComponent<TextMeshProUGUI>().text = newWeightTxt;
         }
     }
 
@@ -40,6 +53,7 @@ public class DisplayInventory : MonoBehaviour
             obj.name = InventoryPrefab.name;
             obj.transform.SetParent(InventorySlotArea);
             obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
+            obj.GetComponent<InventorySlot>().InventoryController = _inventoryController;
         }
     }
 
