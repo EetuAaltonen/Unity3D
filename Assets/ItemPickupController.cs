@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class ItemPickupManager : MonoBehaviour
+public class ItemPickupController : MonoBehaviour
 {
-    public SelectionManager Manager;
-    public InventoryController InventoryController;
+    [SerializeField] private GameObject _selectionController;
+    [SerializeField] private GameObject _inventoryController;
+    private InventoryController _inventoryScript;
     private ISelector _selector;
 
     private void Start()
     {
-        _selector = Manager.GetComponent<ISelector>();
+        _selector = _selectionController.GetComponent<ISelector>();
+        _inventoryScript = _inventoryController.GetComponent<InventoryController>();
     }
 
     // Update is called once per frame
@@ -27,7 +29,7 @@ public class ItemPickupManager : MonoBehaviour
                     var droppedItem = selection.gameObject.GetComponent<DroppedItem>();
                     if (droppedItem != null)
                     {
-                        InventoryController.AddItem(droppedItem.Item, droppedItem.Amount);
+                        _inventoryScript.AddItem(droppedItem.Item, droppedItem.Amount);
                         Destroy(selection.gameObject);
                     }
                 }
