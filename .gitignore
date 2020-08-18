@@ -13,6 +13,12 @@
 # Imported sample assets
 /[Aa]ssets/Samples*
 
+# TextMesh Pro asset
+/[Aa]ssets/TextMesh Pro*
+
+# PathCreator asset
+/[Aa]ssets/PathCreator*
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
