@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float JumpVelocity;
 
     private CharacterController _controller;
-    private PlayerGravity _gravityScript;
+    private CharacterGravity _gravityScript;
     private PlayerCamera _cameraScript;
     private ChangePOV _povScript;
     private Transform _playerRef;
@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         _controller = GetComponent<CharacterController>();
-        _gravityScript = GetComponent<PlayerGravity>();
+        _gravityScript = GetComponent<CharacterGravity>();
         _cameraScript = GetComponent<PlayerCamera>();
         _povScript = GetComponent<ChangePOV>();
 
@@ -102,11 +102,11 @@ public class PlayerMovement : MonoBehaviour
     {
         float modelAngle;
         float playerYRotation = _playerRef.localRotation.eulerAngles.y;
-        playerYRotation = ScaleRotation(playerYRotation);
+        playerYRotation = RotationUtilities.ScaleRotation(playerYRotation);
         if (move.magnitude > 0)
         {
             float modelTargetAngle = 90f - (z * 45f);
-            playerYRotation = ScaleRotation(playerYRotation);
+            playerYRotation = RotationUtilities.ScaleRotation(playerYRotation);
             modelAngle = Mathf.Lerp(playerYRotation, modelTargetAngle * x, _modelTurnInterpolation * Time.deltaTime);
             _playerRef.localRotation = Quaternion.Euler(0f, modelAngle, 0f);
         }
@@ -118,10 +118,5 @@ public class PlayerMovement : MonoBehaviour
                 _playerRef.localRotation = Quaternion.Euler(0f, modelAngle, 0f);
             }
         }
-    }
-
-    private float ScaleRotation(float rotation)
-    {
-        return (rotation > 180) ? rotation - 360 : rotation;
     }
 }
