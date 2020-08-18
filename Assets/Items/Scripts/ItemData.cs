@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -12,10 +11,10 @@ public class ItemData : ScriptableObject
     public ItemType Type;
     public float Weight;
     public int Amount;
-    public ItemBuff Buff;
+    public List<ItemBuff> ItemBuffs;
     [TextArea(15, 20)]
     public string Description;
-    public ItemData(int id, GameObject prefab, string name, ItemType type, float weight, int amount, ItemBuff buff, string description)
+    public void Init(int id, GameObject prefab, string name, ItemType type, float weight, int amount, List<ItemBuff> itemBuffs, string description)
     {
         Id = id;
         Prefab = prefab;
@@ -23,11 +22,11 @@ public class ItemData : ScriptableObject
         Type = type;
         Weight = weight;
         Amount = amount;
-        Buff = buff;
+        ItemBuffs = itemBuffs;
         Description = description;
     }
 
-    public ItemData(ItemData item)
+    public void Init(ItemData item)
     {
         Id = item.Id;
         Prefab = item.Prefab;
@@ -35,7 +34,7 @@ public class ItemData : ScriptableObject
         Type = item.Type;
         Weight = item.Weight;
         Amount = item.Amount;
-        Buff = item.Buff;
+        ItemBuffs = item.ItemBuffs;
         Description = item.Description;
     }
 

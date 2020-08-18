@@ -10,29 +10,24 @@ public class InventoryController : MonoBehaviour
     public ItemDatabaseObject Database;
     public InventoryObject InventoryObject;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Save();
-        }
+    private const float MIN_DROP_DISTANCE = 2f;
+    private const float MAX_DROP_DISTANCE = 4f;
+    [SerializeField] private GameObject _droppedItemPrefab;
+    [SerializeField] private GameObject _collectableParentRef;
+    [SerializeField] private GameObject _playerInstanceRef;
+    [SerializeField] private GameObject _inventoryScreenRef;
+    private DisplayInventory _displayScript;
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            Load();
-        }
+    // Start is called before the first frame update
+    void Start()
+    {
+        _displayScript = _inventoryScreenRef.GetComponent<DisplayInventory>();
     }
 
     public void AddItem(ItemData item, int amount)
     {
-        // TODO: Items with buffs are non-stackable
-        /*if (_item.buffs.Length > 0)
-        {
-            Container.Items.Add(new InventorySlot(_item.Id, _item, _amount));
-            return;
-        }*/
-        var _item = new ItemData(item);
+        var _item = ScriptableObject.CreateInstance(typeof(ItemData)) as ItemData;
+        _item.Init(item);
         _item.Amount = amount;
         var index = GetSlotIndex(_item);
         if (index == InventoryObject.Container.Items.Count)
@@ -50,11 +45,59 @@ public class InventoryController : MonoBehaviour
                 InventoryObject.Container.Items.Insert(index, _item);
             }
         }
+        InventoryObject.WeightLoad += (item.Weight * amount);
+        _displayScript.RequestInventoryRefresh();
     }
 
-    private void OnApplicationQuit()
+    public void DropItem(ItemData item, int amount)
     {
-        InventoryObject.Container.Items.Clear();
+        var dropPosition = _playerInstanceRef.transform.position;
+        dropPosition += _playerInstanceRef.transform.forward.normalized * Random.Range(MIN_DROP_DISTANCE, MAX_DROP_DISTANCE);
+
+        var dropObj = Instantiate(
+            _droppedItemPrefab,
+            dropPosition,
+            Quaternion.Euler(-90f, 0f, 0f)
+        );
+        dropObj.transform.SetParent(_collectableParentRef.transform);
+        dropObj.GetComponent<DroppedItem>().Item = item;
+        dropObj.name = _droppedItemPrefab.name;
+
+        var childObj = Instantiate(item.Prefab, Vector3.zero, Quaternion.Euler(Vector3.zero));
+        childObj.transform.SetParent(dropObj.transform);
+        childObj.transform.localPosition = Vector3.zero;
+        childObj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        childObj.name = item.Prefab.name;
+
+        dropObj.GetComponent<Outline>().ReInitOutline();
+
+        RemoveItem(item, 1);
+    }
+
+    public void RemoveItem(ItemData item, int amount)
+    {
+        var index = GetSlotIndex(item);
+        if (index == InventoryObject.Container.Items.Count)
+        {
+            Debug.LogError($"No items found with index {index}");
+        }
+        else
+        {
+            var _item = InventoryObject.Container.Items[index];
+            if (item.Id == _item.Id)
+            {
+                if (_item.Amount - amount <= 0)
+                {
+                    InventoryObject.Container.Items.RemoveAt(index);
+                }
+                else
+                {
+                    InventoryObject.Container.Items[index].AddAmount(-amount);
+                }
+            }
+        }
+        InventoryObject.WeightLoad += (item.Weight * (-amount));
+        _displayScript.RequestInventoryRefresh();
     }
 
     public int GetSlotIndex(ItemData item)
@@ -64,7 +107,8 @@ public class InventoryController : MonoBehaviour
         for (i = 0; i < inventorySize; i++)
         {
             var _item = InventoryObject.Container.Items[i];
-            if (_item.Id >= item.Id) break;
+            if (_item.Id > item.Id) return i;
+            if (ItemDataUtilities.CompareItems(item, _item)) break;
         }
         return i;
     }
@@ -107,5 +151,11 @@ public class InventoryController : MonoBehaviour
     public void Clear()
     {
         InventoryObject = new InventoryObject();
+        _displayScript.RequestInventoryRefresh();
+    }
+
+    private void OnApplicationQuit()
+    {
+        InventoryObject.Container.Items.Clear();
     }
 }

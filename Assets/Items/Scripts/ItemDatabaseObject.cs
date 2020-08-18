@@ -6,29 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item Database", menuName = "Inventory System/Items/Database")]
 public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiver
 {
-    public ItemData[] WeaponData;
-    public ItemData[] EquipmentData;
-    public ItemData[] PotionData;
-    public ItemData[] FoodData;
-    public ItemData[] BookData;
-    public ItemData[] QuestData;
-    public ItemData[] GeneralData;
-
+    [SerializeField] private ItemData[] ItemData;
     public Dictionary<int, ItemData> ItemDictionary = new Dictionary<int, ItemData>();
-
-    public ItemData[][] GetAllItemData()
-    {
-        return new ItemData[][]
-        {
-            WeaponData,
-            EquipmentData,
-            PotionData,
-            FoodData,
-            BookData,
-            QuestData,
-            GeneralData
-        };
-    }
 
     public void OnAfterDeserialize()
     {
@@ -40,7 +19,12 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
         CreateItemDictionary();
     }
 
-    [ContextMenu("SortItems")]
+    public ItemData[] GetAllItemData()
+    {
+        return ItemData;
+    }
+
+    /*[ContextMenu("SortItems")]
     public void SortItems()
     {
         CreateItemDictionary();
@@ -58,7 +42,7 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
         }
 
         AddItemsToDictionary();
-    }
+    }*/
 
     private void CreateItemDictionary()
     {
@@ -68,15 +52,11 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
     private void AddItemsToDictionary()
     {
         var id = 0;
-        var allItemData = GetAllItemData();
-        foreach (var itemCategory in allItemData)
+        foreach (var item in ItemData)
         {
-            foreach (var item in itemCategory)
-            {
-                item.Id = id;
-                ItemDictionary.Add(id, item);
-                id++;
-            }
+            item.Id = id;
+            ItemDictionary.Add(id, item);
+            id++;
         }
     }
 }

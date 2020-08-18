@@ -15,4 +15,7 @@ MonoBehaviour:
   SavePath: /Inventory.save
   Database: {fileID: 11400000, guid: ae7d31e1611c45e469f26d8918bec9f1, type: 2}
   Container:
-    InventorySlots: []
+    Items: []
+  WeightCapacity: 100
+  WeightCapacityBuff: 0
+  WeightLoad: 0

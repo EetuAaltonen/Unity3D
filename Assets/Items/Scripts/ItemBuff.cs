@@ -1,4 +1,5 @@
-﻿public class ItemBuff
+﻿[System.Serializable]
+public class ItemBuff
 {
     public ItemBuffType Type;
     public float Amount;

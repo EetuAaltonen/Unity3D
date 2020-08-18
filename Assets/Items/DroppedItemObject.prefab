@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 2670072876691185079}
   - component: {fileID: 7227307543885832563}
   - component: {fileID: 1731519780}
-  m_Layer: 12
-  m_Name: DroppedItem
+  m_Layer: 13
+  m_Name: DroppedItemObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -7,6 +7,9 @@ public class InventoryObject : ScriptableObject
     public string SavePath;
     public ItemDatabaseObject Database;
     public Inventory Container;
+    public float WeightCapacity;
+    public float WeightCapacityBuff;
+    public float WeightLoad;
 }
 
 [System.Serializable]

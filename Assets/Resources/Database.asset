@@ -12,14 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53e8927bdddfc4144a55668b57fb5e16, type: 3}
   m_Name: Database
   m_EditorClassIdentifier: 
-  WeaponData:
+  ItemData:
+  - {fileID: 11400000, guid: b0c3653447becde4386737075c904b95, type: 2}
+  - {fileID: 11400000, guid: 837517b3c0d06ae4cb82e2ea216bdc99, type: 2}
   - {fileID: 11400000, guid: af5ff38620314694bbecd49792ca363b, type: 2}
   - {fileID: 11400000, guid: 78c6a04766458de4bbe70a295ab64512, type: 2}
-  EquipmentData:
-  - {fileID: 11400000, guid: b0c3653447becde4386737075c904b95, type: 2}
-  PotionData: []
-  FoodData:
-  - {fileID: 11400000, guid: 837517b3c0d06ae4cb82e2ea216bdc99, type: 2}
-  BookData: []
-  QuestData: []
-  GeneralData: []
