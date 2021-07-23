@@ -16,7 +16,14 @@ MonoBehaviour:
   Prefab: {fileID: 919132149155446097, guid: 75c0af3c0008dec409248b47c505c13b, type: 3}
   Name: Battleaxe
   Type: 0
+  EquipSlot: 5
   Weight: 5
   Amount: 0
-  ItemBuffs: []
+  StatModifier:
+  - Type: 0
+    Amount: 0
+    ValueType: 0
+    Durability: 0
+    Target: 0
+    Source: 
   Description: Heavy battleaxe

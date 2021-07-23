@@ -16,6 +16,7 @@ MonoBehaviour:
   Prefab: {fileID: 919132149155446097, guid: 06a80930da7810c47b45ca60605193a7, type: 3}
   Name: HornHelmet
   Type: 1
+  EquipSlot: 1
   Weight: 2
   Amount: 0
   ItemBuffs: []

@@ -10,19 +10,19 @@ public static class ItemDataUtilities
         if (item1.Name != item2.Name) return false;
         if (item1.Type != item2.Type) return false;
 
-        if (item1.ItemBuffs.Count != item2.ItemBuffs.Count) return false;
-        for (int i = 0; i < item1.ItemBuffs.Count; i++)
+        if (item1.StatModifier.Count != item2.StatModifier.Count) return false;
+        for (int i = 0; i < item1.StatModifier.Count; i++)
         {
-            if (!CompareItemBuffs(item1.ItemBuffs[i], item2.ItemBuffs[i])) return false;
+            if (!CompareItemStatModifier(item1.StatModifier[i], item2.StatModifier[i])) return false;
         }
         return true;
     }
 
-    public static bool CompareItemBuffs(ItemBuff buff1, ItemBuff buff2)
+    public static bool CompareItemStatModifier(StatModifier statModifier1, StatModifier statModifier2)
     {
-        if (buff1.Type != buff2.Type) return false;
-        if (buff1.Amount != buff2.Amount) return false;
-        if (buff1.Durability != buff2.Durability) return false;
+        if (statModifier1.Type != statModifier2.Type) return false;
+        if (statModifier1.Amount != statModifier2.Amount) return false;
+        if (statModifier1.Durability != statModifier2.Durability) return false;
         return true;
     }
 }
