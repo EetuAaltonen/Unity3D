@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
+    public static InventoryController Instance;
+
     public string SavePath;
     public ItemDatabaseObject Database;
     public InventoryObject InventoryObject;
@@ -17,6 +19,11 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private GameObject _playerInstanceRef;
     [SerializeField] private GameObject _inventoryScreenRef;
     private DisplayInventory _displayScript;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()

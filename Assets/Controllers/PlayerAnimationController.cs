@@ -16,10 +16,21 @@ public class PlayerAnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var movementSpeed = _movementScript.GetMovementSpeed();
         if (Animator != null)
         {
+            var movementSpeed = _movementScript.GetMovementSpeed();
             Animator.SetFloat("MovementSpeed", movementSpeed);
+
+            var actionState = _movementScript.GetActionState();
+            switch (actionState)
+            {
+                case ActionState.Attack:
+                    {
+                        Animator.SetTrigger("Attack");
+                        _movementScript.ResetActionState();
+                    }
+                    break;
+            }
         }
     }
 }
