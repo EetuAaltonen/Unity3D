@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     private float _turnSmoothTime = 0.2f;
     private float _turnSmoothVelocity;
 
+    private ActionState _actionState = ActionState.Idle;
+
     // Start is called before the first frame update
     void Start() {
         _controller = GetComponent<CharacterController>();
@@ -32,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
         _cameraScript = GetComponent<PlayerCamera>();
         _povScript = GetComponent<ChangePOV>();
 
-        _playerRef = transform.Find("Player");
+        _playerRef = transform.Find("PlayerModel");
         _thirdPersonCamera = _cameraScript.ThirdPersonCamera;
 
         StopMovement();
@@ -78,6 +80,24 @@ public class PlayerMovement : MonoBehaviour
             IsRunning = !IsRunning;
             _maxSpeed = IsRunning ? MaxRunSpeed : MaxWalkSpeed;
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            _actionState = ActionState.Attack;
+        } else if (Input.GetMouseButtonDown(1))
+        {
+            _actionState = ActionState.Idle;
+        }
+    }
+
+    public ActionState GetActionState()
+    {
+        return _actionState;
+    }
+
+    public void ResetActionState()
+    {
+        _actionState = ActionState.Idle;
     }
 
     public float GetMovementSpeed()
