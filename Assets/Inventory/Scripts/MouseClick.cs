@@ -7,15 +7,19 @@ using UnityEngine.EventSystems;
 public class MouseClick : MonoBehaviour, IPointerClickHandler
 {
     private InventorySlot _inventorySlot;
-    private InventoryController _inventoryControllerScript;
     private GameObject _itemHolderRef;
     private RotateViewer _viewerScript;
 
+    private InventoryController _inventoryController;
+    private EquipmentController _equipmentController;
+
     // Start is called before the first frame update
     void Start()
-    { 
+    {
+        _inventoryController = InventoryController.Instance;
+        _equipmentController = EquipmentController.Instance;
+
         _inventorySlot = GetComponent<InventorySlot>();
-        _inventoryControllerScript = _inventorySlot.InventoryController.GetComponent<InventoryController>();
         _itemHolderRef = GameObject.Find("ItemInspectorHolder");
         _viewerScript = _itemHolderRef.GetComponent<RotateViewer>();
     }
@@ -27,13 +31,17 @@ public class MouseClick : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && eventData.button == PointerEventData.InputButton.Left)
+        {
+            DropItem(_inventorySlot.Item);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Left)
         {
             SwapViewerItem(_inventorySlot.Item);
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            DropItem(_inventorySlot.Item);
+            ToggleEquipItem(_inventorySlot.Item);
         }
     }
 
@@ -49,9 +57,14 @@ public class MouseClick : MonoBehaviour, IPointerClickHandler
         _viewerScript.SwapItemRequest = true;
     }
 
+    public void ToggleEquipItem(ItemData item)
+    {
+        _equipmentController.ToggleEquipItem(item);
+    }
+
     public void DropItem(ItemData item)
     {
-        _inventoryControllerScript.DropItem(item, 1);
+        _inventoryController.DropItem(item, 1);
         ClearViewerItem();
     }
 }
