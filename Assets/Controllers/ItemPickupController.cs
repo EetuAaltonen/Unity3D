@@ -1,19 +1,23 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ItemPickupController : MonoBehaviour
 {
-    [SerializeField] private GameObject _selectionController;
-    [SerializeField] private GameObject _inventoryController;
-    private InventoryController _inventoryScript;
-    private ISelector _selector;
+    public static ItemPickupController Instance;
+    
+    private InteractionTargetSelector _interactionTargetSelector;
+    private InventoryController _inventoryController;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
-        _selector = _selectionController.GetComponent<ISelector>();
-        _inventoryScript = _inventoryController.GetComponent<InventoryController>();
+        _interactionTargetSelector = InteractionTargetSelector.Instance;
+        _inventoryController = InventoryController.Instance;
     }
 
     // Update is called once per frame
@@ -21,16 +25,16 @@ public class ItemPickupController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            var selection = _selector.GetSelection();
-            if (selection != null)
+            Transform interactionTarget = _interactionTargetSelector.GetInteractionTarget();
+            if (interactionTarget != null)
             {
-                if (selection.gameObject.layer == LayerMask.NameToLayer("Collectable"))
+                if (interactionTarget.gameObject.layer == LayerMask.NameToLayer("Collectable"))
                 {
-                    var droppedItem = selection.gameObject.GetComponent<DroppedItem>();
-                    if (droppedItem != null)
+                    ItemInstance itemInstance = interactionTarget.gameObject.GetComponent<ItemInstance>();
+                    if (itemInstance != null)
                     {
-                        _inventoryScript.AddItem(droppedItem.Item, droppedItem.Amount);
-                        Destroy(selection.gameObject);
+                        _inventoryController.AddItem(itemInstance.Item, itemInstance.Amount);
+                        Destroy(interactionTarget.gameObject);
                     }
                 }
             }
