@@ -13,17 +13,16 @@ MonoBehaviour:
   m_Name: Battleaxe
   m_EditorClassIdentifier: 
   Id: 2
-  Prefab: {fileID: 919132149155446097, guid: 75c0af3c0008dec409248b47c505c13b, type: 3}
+  InstancePrefab: {fileID: 3309823665185071436, guid: cff22c95f4c391c4f8de44db5f24f81b, type: 3}
   Name: Battleaxe
   Type: 0
   EquipSlot: 5
   Weight: 5
   Amount: 0
   StatModifier:
-  - Type: 0
-    Amount: 0
+  - Type: 4
+    Amount: 10
     ValueType: 0
-    Durability: 0
-    Target: 0
-    Source: 
+    Duration: 0
+    Target: 1
   Description: Heavy battleaxe

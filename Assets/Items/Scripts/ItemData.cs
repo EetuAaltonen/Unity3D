@@ -6,7 +6,7 @@ using UnityEngine;
 public class ItemData : ScriptableObject
 {
     public int Id;
-    public GameObject Prefab;
+    public GameObject InstancePrefab;
     public string Name;
     public ItemType Type;
     public EquipmentSlot EquipSlot;
@@ -15,10 +15,10 @@ public class ItemData : ScriptableObject
     public List<StatModifier> StatModifier;
     [TextArea(15, 20)]
     public string Description;
-    public void Init(int id, GameObject prefab, string name, ItemType type, EquipmentSlot equipSlot, float weight, int amount, List<StatModifier> itemBuffs, string description)
+    public void Init(int id, GameObject instancePrefab, string name, ItemType type, EquipmentSlot equipSlot, float weight, int amount, List<StatModifier> itemBuffs, string description)
     {
         Id = id;
-        Prefab = prefab;
+        InstancePrefab = instancePrefab;
         Name = name;
         Type = type;
         EquipSlot = equipSlot;
@@ -32,7 +32,7 @@ public class ItemData : ScriptableObject
     public void Init(ItemData item)
     {
         Id = item.Id;
-        Prefab = item.Prefab;
+        InstancePrefab = item.InstancePrefab;
         Name = item.Name;
         Type = item.Type;
         EquipSlot = item.EquipSlot;

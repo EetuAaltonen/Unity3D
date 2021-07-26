@@ -22,7 +22,7 @@ public static class ItemDataUtilities
     {
         if (statModifier1.Type != statModifier2.Type) return false;
         if (statModifier1.Amount != statModifier2.Amount) return false;
-        if (statModifier1.Durability != statModifier2.Durability) return false;
+        if (statModifier1.Duration != statModifier2.Duration) return false;
         return true;
     }
 }

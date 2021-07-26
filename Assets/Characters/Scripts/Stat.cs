@@ -6,13 +6,13 @@ using UnityEngine;
 public class Stat
 {
     [SerializeField]
-    private float baseValue;
+    private float _baseValue;
 
     private List<StatModifier> modifiers = new List<StatModifier>();
 
     public float GetValue()
     {
-        float modifiedValue = baseValue;
+        float modifiedValue = _baseValue;
         modifiers.ForEach(x => modifiedValue += x.Amount);
         return modifiedValue;
     }

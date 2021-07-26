@@ -19,5 +19,11 @@ MonoBehaviour:
   EquipSlot: 1
   Weight: 2
   Amount: 0
-  ItemBuffs: []
+  StatModifier:
+  - Type: 1
+    Amount: 5
+    ValueType: 0
+    Durability: 0
+    Target: 0
+    Source: 
   Description: 
