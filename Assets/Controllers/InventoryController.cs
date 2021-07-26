@@ -14,8 +14,7 @@ public class InventoryController : MonoBehaviour
 
     private const float MIN_DROP_DISTANCE = 2f;
     private const float MAX_DROP_DISTANCE = 4f;
-    [SerializeField] private GameObject _droppedItemPrefab;
-    [SerializeField] private GameObject _collectableParentRef;
+    [SerializeField] private GameObject _collectableGroup;
     [SerializeField] private GameObject _playerInstanceRef;
     [SerializeField] private GameObject _inventoryScreenRef;
     private DisplayInventory _displayScript;
@@ -61,22 +60,14 @@ public class InventoryController : MonoBehaviour
         var dropPosition = _playerInstanceRef.transform.position;
         dropPosition += _playerInstanceRef.transform.forward.normalized * Random.Range(MIN_DROP_DISTANCE, MAX_DROP_DISTANCE);
 
-        var dropObj = Instantiate(
-            _droppedItemPrefab,
+        var itemInstance = Instantiate(
+            item.InstancePrefab,
             dropPosition,
-            Quaternion.Euler(-90f, 0f, 0f)
+            Quaternion.Euler(0f, -90f, 90f)
         );
-        dropObj.transform.SetParent(_collectableParentRef.transform);
-        dropObj.GetComponent<DroppedItem>().Item = item;
-        dropObj.name = _droppedItemPrefab.name;
-
-        var childObj = Instantiate(item.Prefab, Vector3.zero, Quaternion.Euler(Vector3.zero));
-        childObj.transform.SetParent(dropObj.transform);
-        childObj.transform.localPosition = Vector3.zero;
-        childObj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        childObj.name = item.Prefab.name;
-
-        dropObj.GetComponent<Outline>().ReInitOutline();
+        itemInstance.transform.SetParent(_collectableGroup.transform);
+        itemInstance.name = item.InstancePrefab.name;
+        itemInstance.GetComponent<Outline>().ReInitOutline();
 
         RemoveItem(item, 1);
     }

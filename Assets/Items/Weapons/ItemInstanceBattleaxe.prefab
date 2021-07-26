@@ -182,6 +182,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8345802134907304158, guid: 8ec98d60fad0d3f43838adb1cffc121f, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8648377422298415546, guid: 8ec98d60fad0d3f43838adb1cffc121f, type: 3}
       propertyPath: m_Name
       value: ItemInstanceBattleaxe

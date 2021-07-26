@@ -31,6 +31,7 @@ public class MouseClick : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        // TODO: Shift key not recognized
         if (Input.GetKeyDown(KeyCode.LeftShift) && eventData.button == PointerEventData.InputButton.Left)
         {
             DropItem(_inventorySlot.Item);
