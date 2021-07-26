@@ -1,10 +1,17 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OutlineSelectionResponse : MonoBehaviour, ISelectionResponse
+public class HighlightController : MonoBehaviour
 {
-    public void OnSelect(Transform selection)
+    public static HighlightController Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    public void SetHighlight(Transform selection)
     {
         var outline = selection.GetComponent<Outline>();
         if (outline != null)
@@ -13,7 +20,7 @@ public class OutlineSelectionResponse : MonoBehaviour, ISelectionResponse
         }
     }
 
-    public void OnDeselect(Transform selection)
+    public void ClearHighlight(Transform selection)
     {
         var outline = selection.GetComponent<Outline>();
         if (outline != null)

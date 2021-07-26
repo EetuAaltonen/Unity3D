@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class MouseScreenRayProvider : MonoBehaviour, IRayProvider
+public class MouseScreenRay : MonoBehaviour
 {
     public Camera firstPersonCamera, thirdPersonCamera;
 
