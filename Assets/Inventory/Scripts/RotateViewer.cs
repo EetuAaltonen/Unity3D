@@ -25,7 +25,7 @@ public class RotateViewer : MonoBehaviour
             SwapItemRequest = false;
             if (Item != null)
             {
-                SwapItem(Item.Prefab);
+                SwapItem(Item.InstancePrefab);
                 _holderScript.ResetPosition();
             }
             else
@@ -55,13 +55,14 @@ public class RotateViewer : MonoBehaviour
         {
             transform.localRotation = Quaternion.Euler(0f, 0f, 65f);
 
-            GameObject gameObject = Instantiate(
-                Item.Prefab,
+            GameObject viewItemInstance = Instantiate(
+                Item.InstancePrefab,
                 new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity
             ) as GameObject;
-            gameObject.transform.parent = transform;
-            gameObject.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-            SetLayerRecursively(gameObject, LayerMask.NameToLayer("ItemInspector"));
+            viewItemInstance.transform.parent = transform;
+            viewItemInstance.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            SetLayerRecursively(viewItemInstance, LayerMask.NameToLayer("ItemInspector"));
+            InstancePrefabUtilities.DisableItemInstancePhysics(viewItemInstance);
         }
     }
 

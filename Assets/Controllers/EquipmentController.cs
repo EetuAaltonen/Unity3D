@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,51 +67,47 @@ public class EquipmentController : MonoBehaviour
 
     public void EquipItem(ItemData item)
     {
-        Transform slotBone = GetEquipSlotBone(item.EquipSlot);
         _equippedItems[item.EquipSlot] = item;
-        CreateEquipItemInstance(item, slotBone);
+        CreateEquipItemInstance(item);
     }
 
     public void UnequipItem(ItemData item)
     {
-        Transform slotBone = GetEquipSlotBone(item.EquipSlot);
         _equippedItems[item.EquipSlot] = null;
-        DestroyEquipItemInstance(slotBone);
+        DestroyEquipItemInstance(item.EquipSlot);
     }
 
-    public void CreateEquipItemInstance(ItemData item, Transform slotBone)
+    public void CreateEquipItemInstance(ItemData item)
     {
-        var equipPosition = slotBone.position;
-        var slotObj = Instantiate(
-            item.Prefab,
+        Transform equipSlot = GetEquipSlotTransform(item.EquipSlot);
+        Vector3 equipPosition = equipSlot.position;
+        Vector3 equipPositionOffset = InstancePrefabUtilities.GetEquipPositionOffset(item.InstancePrefab);
+
+        GameObject itemInstance = Instantiate(
+            item.InstancePrefab,
             equipPosition,
             Quaternion.Euler(Vector3.zero)
         );
-        slotObj.transform.SetParent(slotBone);
-        slotObj.transform.localRotation = Quaternion.Euler(0f, 90f, 90f);
-        slotObj.name = item.Name;
+        itemInstance.transform.SetParent(equipSlot);
+        itemInstance.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        itemInstance.transform.localPosition -= equipPositionOffset;
+        itemInstance.name = item.Name;
+
+        InstancePrefabUtilities.DisableItemInstancePhysics(itemInstance);
     }
 
-    public void DestroyEquipItemInstance(Transform slotBone)
+    public void DestroyEquipItemInstance(EquipmentSlot equipmentSlot)
     {
-        foreach (Transform child in slotBone)
+        Transform equipSlot = GetEquipSlotTransform(equipmentSlot);
+        foreach (Transform child in equipSlot)
         {
             Destroy(child.gameObject);
         }
     }
 
-    public Transform GetEquipSlotBone(EquipmentSlot equipmentSlot)
+    public Transform GetEquipSlotTransform(EquipmentSlot equipmentSlot)
     {
-        Transform bone = null;
-
-        switch (equipmentSlot)
-        {
-            case EquipmentSlot.PrimaryWeapon:
-                {
-                    bone = _player.transform.Find("PlayerModel/RootBone/Hips/Waist/Chest/Arm.R/Forearm.R/Hand.R/Hand.R 1");
-                }
-                break;
-        }
-        return bone;
+        string equipSlotName = Enum.GetName(typeof(EquipmentSlot), equipmentSlot) + "Slot";
+        return TransformChildUtilities.FindChildTransformRecursive(_player.transform, equipSlotName);
     }
 }
