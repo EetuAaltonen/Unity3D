@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - PlayerAttack
+  - CreatureAttack
   layers:
   - Default
   - TransparentFX
@@ -16,11 +18,11 @@ TagManager:
   - Ground
   - Building
   - Player
-  - Selectable
+  - Creature
   - Interactive
   - Collectable
-  - 
-  - 
+  - Selectable
+  - AttackCollider
   - 
   - 
   - 
