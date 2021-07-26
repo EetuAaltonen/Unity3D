@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(ChangePOV))]
 public class PlayerCamera : MonoBehaviour
 {
     public float SensitivityX = 100f;

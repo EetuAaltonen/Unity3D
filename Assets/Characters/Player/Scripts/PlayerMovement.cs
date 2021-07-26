@@ -3,20 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterGravity))]
+[RequireComponent(typeof(PlayerCamera))]
+[RequireComponent(typeof(ChangePOV))]
+[RequireComponent(typeof(CharacterStats))]
 public class PlayerMovement : MonoBehaviour
 {
     public bool IsRunning;
-    public float MaxRunSpeed;
-    public float MaxWalkSpeed;
     public float JumpVelocity;
 
     private CharacterController _controller;
     private CharacterGravity _gravityScript;
     private PlayerCamera _cameraScript;
     private ChangePOV _povScript;
+
+    private PlayerStats _playerStats;
+    private Camera _thirdPersonCamera;
     private Transform _playerRef;
 
-    private Camera _thirdPersonCamera;
     private float _maxSpeed;
     private float _smoothSpeed;
     private float _speedInterpolation = 3f;
@@ -33,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         _gravityScript = GetComponent<CharacterGravity>();
         _cameraScript = GetComponent<PlayerCamera>();
         _povScript = GetComponent<ChangePOV>();
+        _playerStats = GetComponent<PlayerStats>();
 
         _playerRef = transform.Find("PlayerModel");
         _thirdPersonCamera = _cameraScript.ThirdPersonCamera;
@@ -78,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             IsRunning = !IsRunning;
-            _maxSpeed = IsRunning ? MaxRunSpeed : MaxWalkSpeed;
+            _maxSpeed = IsRunning ? _playerStats.MaxRunningSpeed.GetValue() : _playerStats.MaxWalkingSpeed.GetValue();
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -115,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
     public void StopRunning()
     {
         IsRunning = false;
-        _maxSpeed = MaxWalkSpeed;
+        _maxSpeed = _playerStats.MaxWalkingSpeed.GetValue();
     }
 
     private void RotatePlayerModel(float x, float z, Vector3 move)

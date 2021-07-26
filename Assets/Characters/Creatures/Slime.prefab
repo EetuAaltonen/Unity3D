@@ -116,16 +116,27 @@ MonoBehaviour:
   Name: Slime
   MaxHealth:
     _baseValue: 20
+  HealthRegeneration:
+    _baseValue: 0
   MaxMana:
+    _baseValue: 0
+  ManaRegeneration:
+    _baseValue: 0
+  MaxStamina:
+    _baseValue: 0
+  StaminaRegeneration:
+    _baseValue: 0
+  MaxWalkingSpeed:
+    _baseValue: 6
+  MaxRunningSpeed:
     _baseValue: 0
   Damage:
     _baseValue: 2
-  Armor:
-    _baseValue: 0
   AttackSpeed:
     _baseValue: 2
-  MovementSpeed:
-    _baseValue: 6
+  Armor:
+    _baseValue: 0
+  StatModifiers: []
   TargetRadius: 20
   AttackDistance: 6
 --- !u!114 &6843334985849935931

@@ -115,16 +115,27 @@ MonoBehaviour:
   Name: Creature Name
   MaxHealth:
     _baseValue: 10
+  HealthRegeneration:
+    _baseValue: 0
   MaxMana:
+    _baseValue: 10
+  ManaRegeneration:
+    _baseValue: 1
+  MaxStamina:
+    _baseValue: 10
+  StaminaRegeneration:
+    _baseValue: 1
+  MaxWalkingSpeed:
+    _baseValue: 6
+  MaxRunningSpeed:
     _baseValue: 0
   Damage:
     _baseValue: 1
-  Armor:
-    _baseValue: 0
   AttackSpeed:
     _baseValue: 4
-  MovementSpeed:
-    _baseValue: 6
+  Armor:
+    _baseValue: 0
+  StatModifiers: []
   TargetRadius: 20
   AttackDistance: 6
 --- !u!114 &1504204011049408280
