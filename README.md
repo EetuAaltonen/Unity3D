@@ -4,3 +4,7 @@
 * TextMesh Pro - Version 1.2.2 or Newer
 * Cinemachine
 * Bézier Path Creator - Version 1.2.0 or Newer
+
+<be>
+
+Small test project created on Unity. (discontinued)
